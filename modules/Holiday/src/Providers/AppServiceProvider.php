@@ -35,13 +35,15 @@ class AppServiceProvider extends ServiceProvider
 
     public function map()
     {
+        $this->mapWebRoute();
+
         Route::prefix('api')
             ->middleware(['api', 'cors'])
             ->namespace($this->namespace)
             ->group(__DIR__.'/../Http/routes.php');
     }
 
-    protected function mapApiRoute()
+    protected function mapWebRoute()
     {
         Route::middleware(['web'])
             ->namespace($this->namespace)
