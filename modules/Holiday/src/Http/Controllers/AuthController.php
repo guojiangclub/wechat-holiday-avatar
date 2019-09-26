@@ -67,7 +67,7 @@ class AuthController extends Controller
         $user = $app->oauth->user();
         $openid = $user->getId();
 
-        $url = request('target_url') . '&openid=' . $openid;
+        $url = request('target_url') . '?openid=' . $openid;
 
         $openid = $user->getId();  // 对应微信的 OPENID
         $nick_name = $user->getNickname(); // 对应微信的 nickname

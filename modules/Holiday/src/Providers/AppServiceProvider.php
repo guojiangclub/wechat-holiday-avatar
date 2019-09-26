@@ -11,7 +11,7 @@
 
 namespace iBrand\HolidayAvatar\Server\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Route;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \Log::info('aaaaa');
+        parent::boot();
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
         }
@@ -34,21 +36,24 @@ class AppServiceProvider extends ServiceProvider
     }
 
     public function map()
-    {
+    {\Log::info('bbbbbbb');
+        $this->mapWebRoute();
+
         Route::prefix('api')
             ->middleware(['api', 'cors'])
             ->namespace($this->namespace)
             ->group(__DIR__.'/../Http/routes.php');
     }
 
-    protected function mapApiRoute()
+    protected function mapWebRoute()
     {
-        Route::middleware(['web'])
-            ->namespace($this->namespace)
-            ->group(function ($router){
-                $router->get('oauth/wxlogin', 'AuthController@wxlogin')->name('api.oauth.wxlogin');
-                $router->get('oauth/getUerInfo', 'AuthController@getUerInfo')->name('api.oauth.getUerInfo');
-            });
+        Route::group([
+            'middleware' => 'web',
+            'namespace' => $this->namespace,
+        ], function ($router) {
+            $router->get('oauth/wxlogin', 'AuthController@wxlogin')->name('api.oauth.wxlogin');
+            $router->get('oauth/getUerInfo', 'AuthController@getUerInfo')->name('api.oauth.getUerInfo');
+        });
     }
 
 
