@@ -11,6 +11,8 @@
 
 namespace iBrand\HolidayAvatar\Server\Providers;
 
+use iBrand\Component\User\Repository\UserRepository;
+use iBrand\HolidayAvatar\Server\Repository\UserRepositoryEloquent;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Route;
 
@@ -32,17 +34,17 @@ class AppServiceProvider extends ServiceProvider
 
     public function register()
     {
-
+        $this->app->bind(UserRepository::class, UserRepositoryEloquent::class);
     }
 
     public function map()
-    {\Log::info('bbbbbbb');
+    {
         $this->mapWebRoute();
 
         Route::prefix('api')
             ->middleware(['api', 'cors'])
             ->namespace($this->namespace)
-            ->group(__DIR__.'/../Http/routes.php');
+            ->group(__DIR__ . '/../Http/routes.php');
     }
 
     protected function mapWebRoute()
